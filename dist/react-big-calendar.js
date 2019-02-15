@@ -2336,6 +2336,7 @@
     WORK_WEEK: 'work_week',
     DAY: 'day',
     AGENDA: 'agenda',
+    AGENDA_STATUS: 'status',
   }
 
   var eventComponent = propTypes.oneOfType([
@@ -2528,6 +2529,7 @@
     tomorrow: 'Tomorrow',
     today: 'Today',
     agenda: 'Agenda',
+    status: 'Status',
     noEventsInRange: 'There are no events in this range.',
     showMore: function showMore(total) {
       return '+' + total + ' more'
@@ -14172,6 +14174,368 @@
     )
   }
 
+  var AgendaStatus =
+    /*#__PURE__*/
+    (function(_React$Component) {
+      _inheritsLoose(AgendaStatus, _React$Component)
+
+      function AgendaStatus() {
+        var _this
+
+        for (
+          var _len = arguments.length, args = new Array(_len), _key = 0;
+          _key < _len;
+          _key++
+        ) {
+          args[_key] = arguments[_key]
+        }
+
+        _this =
+          _React$Component.call.apply(_React$Component, [this].concat(args)) ||
+          this
+
+        _this.renderDay = function(day, events, dayKey) {
+          var _this$props = _this.props,
+            selected = _this$props.selected,
+            getters = _this$props.getters,
+            accessors = _this$props.accessors,
+            localizer = _this$props.localizer,
+            _this$props$component = _this$props.components,
+            Event = _this$props$component.event,
+            AgendaDate = _this$props$component.date
+          events = events.filter(function(e) {
+            return inRange(
+              e,
+              dates.startOf(day, 'day'),
+              dates.endOf(day, 'day'),
+              accessors
+            )
+          })
+          return events.map(function(event, idx) {
+            var title = accessors.title(event)
+            var end = accessors.end(event)
+            var start = accessors.start(event)
+            var status = event.status
+            var userProps = getters.eventProp(
+              event,
+              start,
+              end,
+              isSelected(event, selected)
+            )
+            var dateLabel =
+              idx === 0 && localizer.format(day, 'agendaDateFormat')
+            var first =
+              idx === 0
+                ? React__default.createElement(
+                    'td',
+                    {
+                      rowSpan: events.length,
+                      className: 'rbc-agenda-date-cell',
+                    },
+                    AgendaDate
+                      ? React__default.createElement(AgendaDate, {
+                          day: day,
+                          label: dateLabel,
+                        })
+                      : dateLabel
+                  )
+                : false
+            return React__default.createElement(
+              'tr',
+              {
+                key: dayKey + '_' + idx,
+                className: userProps.className,
+                style: userProps.style,
+              },
+              first,
+              React__default.createElement(
+                'td',
+                {
+                  className: 'rbc-agenda-time-cell',
+                },
+                _this.timeRangeLabel(day, event)
+              ),
+              React__default.createElement(
+                'td',
+                {
+                  className: 'rbc-agenda-status-cell',
+                },
+                status
+              ),
+              React__default.createElement(
+                'td',
+                {
+                  className: 'rbc-agenda-event-cell',
+                },
+                Event
+                  ? React__default.createElement(Event, {
+                      event: event,
+                      title: title,
+                    })
+                  : title
+              )
+            )
+          }, [])
+        }
+
+        _this.timeRangeLabel = function(day, event) {
+          var _this$props2 = _this.props,
+            accessors = _this$props2.accessors,
+            localizer = _this$props2.localizer,
+            components = _this$props2.components
+          var labelClass = '',
+            TimeComponent = components.time,
+            label = localizer.messages.allDay
+          var end = accessors.end(event)
+          var start = accessors.start(event)
+
+          if (!accessors.allDay(event)) {
+            if (dates.eq(start, end, 'day')) {
+              label = localizer.format(
+                {
+                  start: start,
+                  end: end,
+                },
+                'agendaTimeRangeFormat'
+              )
+            } else if (dates.eq(day, start, 'day')) {
+              label = localizer.format(start, 'agendaTimeFormat')
+            } else if (dates.eq(day, end, 'day')) {
+              label = localizer.format(end, 'agendaTimeFormat')
+            }
+          }
+
+          if (dates.gt(day, start, 'day')) labelClass = 'rbc-continues-prior'
+          if (dates.lt(day, end, 'day')) labelClass += ' rbc-continues-after'
+          return React__default.createElement(
+            'span',
+            {
+              className: labelClass.trim(),
+            },
+            TimeComponent
+              ? React__default.createElement(TimeComponent, {
+                  event: event,
+                  day: day,
+                  label: label,
+                })
+              : label
+          )
+        }
+
+        _this._adjustHeader = function() {
+          if (!_this.refs.tbody) return
+          var header = _this.refs.header
+          var firstRow = _this.refs.tbody.firstChild
+          if (!firstRow) return
+          var isOverflowing =
+            _this.refs.content.scrollHeight > _this.refs.content.clientHeight
+          var widths = _this._widths || []
+          _this._widths = [
+            getWidth(firstRow.children[0]),
+            getWidth(firstRow.children[1]),
+            getWidth(firstRow.children[2]),
+          ]
+
+          if (
+            widths[0] !== _this._widths[0] ||
+            widths[1] !== _this._widths[1]
+          ) {
+            _this.refs.dateCol.style.width = _this._widths[0] + 'px'
+            _this.refs.timeCol.style.width = _this._widths[1] + 'px'
+            _this.refs.statusCol.style.width = _this._widths[2] + 'px'
+          }
+
+          if (isOverflowing) {
+            classes.addClass(header, 'rbc-header-overflowing')
+            header.style.marginRight = scrollbarSize() + 'px'
+          } else {
+            classes.removeClass(header, 'rbc-header-overflowing')
+          }
+        }
+
+        return _this
+      }
+
+      var _proto = AgendaStatus.prototype
+
+      _proto.componentDidMount = function componentDidMount() {
+        this._adjustHeader()
+      }
+
+      _proto.componentDidUpdate = function componentDidUpdate() {
+        this._adjustHeader()
+      }
+
+      _proto.render = function render() {
+        var _this2 = this
+
+        var _this$props3 = this.props,
+          length = _this$props3.length,
+          date = _this$props3.date,
+          events = _this$props3.events,
+          accessors = _this$props3.accessors,
+          localizer = _this$props3.localizer
+        var messages = localizer.messages
+        var end = dates.add(date, length, 'day')
+        var range = dates.range(date, end, 'day')
+        events = events.filter(function(event) {
+          return inRange(event, date, end, accessors)
+        })
+        events.sort(function(a, b) {
+          return +accessors.start(a) - +accessors.start(b)
+        })
+        return React__default.createElement(
+          'div',
+          {
+            className: 'rbc-agenda-view',
+          },
+          events.length !== 0
+            ? React__default.createElement(
+                React__default.Fragment,
+                null,
+                React__default.createElement(
+                  'table',
+                  {
+                    ref: 'header',
+                    className: 'rbc-agenda-table',
+                  },
+                  React__default.createElement(
+                    'thead',
+                    null,
+                    React__default.createElement(
+                      'tr',
+                      null,
+                      React__default.createElement(
+                        'th',
+                        {
+                          className: 'rbc-header',
+                          ref: 'dateCol',
+                        },
+                        messages.date
+                      ),
+                      React__default.createElement(
+                        'th',
+                        {
+                          className: 'rbc-header',
+                          ref: 'timeCol',
+                        },
+                        messages.time
+                      ),
+                      React__default.createElement(
+                        'th',
+                        {
+                          className: 'rbc-header',
+                          ref: 'statusCol',
+                        },
+                        messages.status
+                      ),
+                      React__default.createElement(
+                        'th',
+                        {
+                          className: 'rbc-header',
+                        },
+                        messages.event
+                      )
+                    )
+                  )
+                ),
+                React__default.createElement(
+                  'div',
+                  {
+                    className: 'rbc-agenda-content',
+                    ref: 'content',
+                  },
+                  React__default.createElement(
+                    'table',
+                    {
+                      className: 'rbc-agenda-table',
+                    },
+                    React__default.createElement(
+                      'tbody',
+                      {
+                        ref: 'tbody',
+                      },
+                      range.map(function(day, idx) {
+                        return _this2.renderDay(day, events, idx)
+                      })
+                    )
+                  )
+                )
+              )
+            : React__default.createElement(
+                'span',
+                {
+                  className: 'rbc-agenda-empty',
+                },
+                messages.noEventsInRange
+              )
+        )
+      }
+
+      return AgendaStatus
+    })(React__default.Component)
+
+  AgendaStatus.propTypes = {
+    events: propTypes.array,
+    date: propTypes.instanceOf(Date),
+    length: propTypes.number.isRequired,
+    selected: propTypes.object,
+    accessors: propTypes.object.isRequired,
+    components: propTypes.object.isRequired,
+    getters: propTypes.object.isRequired,
+    localizer: propTypes.object.isRequired,
+  }
+  AgendaStatus.defaultProps = {
+    length: 30,
+  }
+
+  AgendaStatus.range = function(start, _ref) {
+    var _ref$length = _ref.length,
+      length =
+        _ref$length === void 0 ? AgendaStatus.defaultProps.length : _ref$length
+    var end = dates.add(start, length, 'day')
+    return {
+      start: start,
+      end: end,
+    }
+  }
+
+  AgendaStatus.navigate = function(date, action, _ref2) {
+    var _ref2$length = _ref2.length,
+      length =
+        _ref2$length === void 0
+          ? AgendaStatus.defaultProps.length
+          : _ref2$length
+
+    switch (action) {
+      case navigate.PREVIOUS:
+        return dates.add(date, -length, 'day')
+
+      case navigate.NEXT:
+        return dates.add(date, length, 'day')
+
+      default:
+        return date
+    }
+  }
+
+  AgendaStatus.title = function(start, _ref3) {
+    var _ref3$length = _ref3.length,
+      length =
+        _ref3$length === void 0
+          ? AgendaStatus.defaultProps.length
+          : _ref3$length,
+      localizer = _ref3.localizer
+    var end = dates.add(start, length, 'day')
+    return localizer.format(
+      {
+        start: start,
+        end: end,
+      },
+      'agendaHeaderFormat'
+    )
+  }
+
   var _VIEWS
   var VIEWS = ((_VIEWS = {}),
   (_VIEWS[views.MONTH] = MonthView),
@@ -14179,6 +14543,7 @@
   (_VIEWS[views.WORK_WEEK] = WorkWeek),
   (_VIEWS[views.DAY] = Day),
   (_VIEWS[views.AGENDA] = Agenda),
+  (_VIEWS[views.AGENDA_STATUS] = AgendaStatus),
   _VIEWS)
 
   function moveDate(View, _ref) {
