@@ -5,12 +5,14 @@ export default [
     allDay: true,
     start: new Date(2015, 3, 0),
     end: new Date(2015, 3, 1),
+    status: 'Vu',
   },
   {
     id: 1,
     title: 'Long Event',
     start: new Date(2015, 3, 7),
     end: new Date(2015, 3, 10),
+    status: 'Vu',
   },
 
   {
@@ -18,6 +20,7 @@ export default [
     title: 'DTS STARTS',
     start: new Date(2016, 2, 13, 0, 0, 0),
     end: new Date(2016, 2, 20, 0, 0, 0),
+    status: 'Vu',
   },
 
   {
@@ -25,6 +28,7 @@ export default [
     title: 'DTS ENDS',
     start: new Date(2016, 10, 6, 0, 0, 0),
     end: new Date(2016, 10, 13, 0, 0, 0),
+    status: "En salle d'attente",
   },
 
   {
@@ -32,12 +36,14 @@ export default [
     title: 'Some Event',
     start: new Date(2015, 3, 9, 0, 0, 0),
     end: new Date(2015, 3, 10, 0, 0, 0),
+    status: "En salle d'attente",
   },
   {
     id: 5,
     title: 'Conference',
     start: new Date(2015, 3, 11),
     end: new Date(2015, 3, 13),
+    status: 'À venir',
     desc: 'Big conference for important people',
   },
   {
@@ -45,6 +51,7 @@ export default [
     title: 'Meeting',
     start: new Date(2015, 3, 12, 10, 30, 0, 0),
     end: new Date(2015, 3, 12, 12, 30, 0, 0),
+    status: 'À venir',
     desc: 'Pre-meeting meeting, to prepare for the meeting',
   },
   {
@@ -52,6 +59,7 @@ export default [
     title: 'Lunch',
     start: new Date(2015, 3, 12, 12, 0, 0, 0),
     end: new Date(2015, 3, 12, 13, 0, 0, 0),
+    status: 'À venir',
     desc: 'Power lunch',
   },
   {
@@ -59,12 +67,14 @@ export default [
     title: 'Meeting',
     start: new Date(2015, 3, 12, 14, 0, 0, 0),
     end: new Date(2015, 3, 12, 15, 0, 0, 0),
+    status: 'À venir',
   },
   {
     id: 9,
     title: 'Happy Hour',
     start: new Date(2015, 3, 12, 17, 0, 0, 0),
     end: new Date(2015, 3, 12, 17, 30, 0, 0),
+    status: 'À venir',
     desc: 'Most important meal of the day',
   },
   {
@@ -72,35 +82,41 @@ export default [
     title: 'Dinner',
     start: new Date(2015, 3, 12, 20, 0, 0, 0),
     end: new Date(2015, 3, 12, 21, 0, 0, 0),
+    status: 'À venir',
   },
   {
     id: 11,
     title: 'Birthday Party',
     start: new Date(2015, 3, 13, 7, 0, 0),
     end: new Date(2015, 3, 13, 10, 30, 0),
+    status: 'À venir',
   },
   {
     id: 12,
     title: 'Late Night Event',
     start: new Date(2015, 3, 17, 19, 30, 0),
     end: new Date(2015, 3, 18, 2, 0, 0),
+    status: 'À venir',
   },
   {
     id: 12.5,
     title: 'Late Same Night Event',
     start: new Date(2015, 3, 17, 19, 30, 0),
     end: new Date(2015, 3, 17, 23, 30, 0),
+    status: 'À venir',
   },
   {
     id: 13,
     title: 'Multi-day Event',
     start: new Date(2015, 3, 20, 19, 30, 0),
     end: new Date(2015, 3, 22, 2, 0, 0),
+    status: 'À venir',
   },
   {
     id: 14,
     title: 'Today',
     start: new Date(new Date().setHours(new Date().getHours() - 3)),
     end: new Date(new Date().setHours(new Date().getHours() + 3)),
+    status: 'À venir',
   },
 ]
