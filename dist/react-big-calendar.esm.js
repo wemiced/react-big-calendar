@@ -4628,6 +4628,7 @@ var Agenda =
           var title = accessors.title(event)
           var end = accessors.end(event)
           var start = accessors.start(event)
+          var status = event.status
           var userProps = getters.eventProp(
             event,
             start,
@@ -4665,6 +4666,13 @@ var Agenda =
                 className: 'rbc-agenda-time-cell',
               },
               _this.timeRangeLabel(day, event)
+            ),
+            React.createElement(
+              'td',
+              {
+                className: 'rbc-agenda-status-cell',
+              },
+              status
             ),
             React.createElement(
               'td',
@@ -4737,11 +4745,13 @@ var Agenda =
         _this._widths = [
           getWidth(firstRow.children[0]),
           getWidth(firstRow.children[1]),
+          getWidth(firstRow.children[2]),
         ]
 
         if (widths[0] !== _this._widths[0] || widths[1] !== _this._widths[1]) {
           _this.refs.dateCol.style.width = _this._widths[0] + 'px'
           _this.refs.timeCol.style.width = _this._widths[1] + 'px'
+          _this.refs.statusCol.style.width = _this._widths[2] + 'px'
         }
 
         if (isOverflowing) {
@@ -4819,6 +4829,14 @@ var Agenda =
                         ref: 'timeCol',
                       },
                       messages.time
+                    ),
+                    React.createElement(
+                      'th',
+                      {
+                        className: 'rbc-header',
+                        ref: 'statusCol',
+                      },
+                      messages.status
                     ),
                     React.createElement(
                       'th',
