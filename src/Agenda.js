@@ -42,6 +42,9 @@ class Agenda extends React.Component {
                   <th className="rbc-header" ref="timeCol">
                     {messages.time}
                   </th>
+                  <th className="rbc-header" ref="statusCol">
+                    {messages.status}
+                  </th>
                   <th className="rbc-header">{messages.event}</th>
                 </tr>
               </thead>
@@ -78,6 +81,7 @@ class Agenda extends React.Component {
       let title = accessors.title(event)
       let end = accessors.end(event)
       let start = accessors.start(event)
+      let status = event.status
 
       const userProps = getters.eventProp(
         event,
@@ -110,6 +114,7 @@ class Agenda extends React.Component {
           <td className="rbc-agenda-time-cell">
             {this.timeRangeLabel(day, event)}
           </td>
+          <td className="rbc-agenda-status-cell">{status}</td>
           <td className="rbc-agenda-event-cell">
             {Event ? <Event event={event} title={title} /> : title}
           </td>
@@ -167,11 +172,13 @@ class Agenda extends React.Component {
     this._widths = [
       getWidth(firstRow.children[0]),
       getWidth(firstRow.children[1]),
+      getWidth(firstRow.children[2]),
     ]
 
     if (widths[0] !== this._widths[0] || widths[1] !== this._widths[1]) {
       this.refs.dateCol.style.width = this._widths[0] + 'px'
       this.refs.timeCol.style.width = this._widths[1] + 'px'
+      this.refs.statusCol.style.width = this._widths[2] + 'px'
     }
 
     if (isOverflowing) {
