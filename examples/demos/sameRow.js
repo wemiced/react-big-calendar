@@ -6,14 +6,36 @@ import BigCalendar from 'react-big-calendar'
 import TimeGrid from 'react-big-calendar/lib/TimeGrid'
 import ExampleControlSlot from '../ExampleControlSlot'
 
-const STEP_SIZE = 20
-const TIMESLOTS_NUMBER = 3
+const STEP_SIZE = 10
+const TIMESLOTS_NUMBER = 6
+//
+// events.push({
+//   id: 100,
+//   title: 'Meeting - 2',
+//   start: new Date(2015, 3, 12, 15, 0, 0, 0),
+//   end: new Date(2015, 3, 12, 15, 10, 0, 0),
+// })
+//
 
 events.push({
   id: 100,
-  title: 'Meeting - 2',
+  title: 'Meeting - 1 - 10',
   start: new Date(2015, 3, 12, 15, 0, 0, 0),
   end: new Date(2015, 3, 12, 15, 10, 0, 0),
+})
+
+events.push({
+  id: 100,
+  title: 'Meeting - 2 - 10',
+  start: new Date(2015, 3, 12, 15, 10, 0, 0),
+  end: new Date(2015, 3, 12, 15, 20, 0, 0),
+})
+
+events.push({
+  id: 100,
+  title: 'Meeting - 3 - 10',
+  start: new Date(2015, 3, 12, 15, 20, 0, 0),
+  end: new Date(2015, 3, 12, 15, 30, 0, 0),
 })
 
 class MyWeek extends React.Component {

@@ -12264,7 +12264,7 @@
             events: events,
             accessors: accessors,
             slotMetrics: slotMetrics,
-            minimumStartDifference: Math.ceil((step * timeslots) / 3),
+            minimumStartDifference: Math.ceil((step * timeslots) / 6),
           })
           return styledEvents.map(function(_ref, idx) {
             var event = _ref.event,
