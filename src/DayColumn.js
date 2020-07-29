@@ -177,7 +177,7 @@ class DayColumn extends React.Component {
       events,
       accessors,
       slotMetrics,
-      minimumStartDifference: Math.ceil((step * timeslots) / 6),
+      minimumStartDifference: Math.ceil((step * timeslots) / 12),
     })
 
     return styledEvents.map(({ event, style }, idx) => {

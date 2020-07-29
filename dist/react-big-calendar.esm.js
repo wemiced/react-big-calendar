@@ -3151,7 +3151,7 @@ var DayColumn =
           events: events$$1,
           accessors: accessors,
           slotMetrics: slotMetrics,
-          minimumStartDifference: Math.ceil((step * timeslots) / 6),
+          minimumStartDifference: Math.ceil((step * timeslots) / 12),
         })
         return styledEvents.map(function(_ref, idx) {
           var event = _ref.event,
